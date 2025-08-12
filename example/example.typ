@@ -7,6 +7,7 @@
 #show ref: set text(fill: blue)
 
 #set heading(numbering: "1.1")
+#set math.equation(numbering: "(1)")
 
 // === [ figure example ] ======================================================
 
@@ -114,3 +115,17 @@ See #cref[@sec-figures-example @sec-tables-example @sec-listings-example @sec-se
 <sec-subsection>
 
 #lorem(10)
+
+= Equations example
+
+$ abs(z) = sqrt(x^2 + y^2) $ <eq-pythagoras>
+
+$ e^(i pi) = -1 $ <eq-eulers-identity>
+
+$ (cos x + i sin x)^n = cos(n x) + i sin(n x) $ <eq-de-moivres-formula>
+
+See @eq-pythagoras, @eq-eulers-identity and @eq-de-moivres-formula.
+
+See #cref[@eq-pythagoras @eq-eulers-identity @eq-de-moivres-formula].
+
+#Cref[@eq-pythagoras @eq-eulers-identity @eq-de-moivres-formula] are ...

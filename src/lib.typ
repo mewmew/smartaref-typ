@@ -4,10 +4,18 @@
 //
 // - [x] headings:  https://typst.app/docs/reference/model/heading/
 // - [x] figures:   https://typst.app/docs/reference/model/figure/
-// - [ ] equations: https://typst.app/docs/reference/math/equation/
+// - [x] equations: https://typst.app/docs/reference/math/equation/
 // - [ ] footnotes: https://typst.app/docs/reference/model/footnote/
 
 #import "@local/hallon:0.1.0": normalize-length, title-case, pluralize
+
+#let is-heading(elem) = {
+	return elem.has("bookmarked")
+}
+
+#let is-equation(elem) = {
+	return elem.has("number-align") and elem.has("block")
+}
 
 #let supplement-func(ref, capital: false) = {
 	let target = query(ref.target).first()
@@ -44,9 +52,12 @@
 		let c = none
 		if elem.has("counter") {
 			c = elem.counter
-		} else if elem.has("bookmarked") {
-			c = counter(heading) // counter of heading element
+		} else if is-heading(elem) {
+			c = counter(heading)
+		} else if is-equation(elem) {
+			c = counter(math.equation)
 		} else {
+			//return [ fields: #elem.fields() \ ]
 			panic("unable to get counter of element '" + type(elem) + "'")
 		}
 		let text = std.numbering(elem.numbering, ..c.at(elem.label))
