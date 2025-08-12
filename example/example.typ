@@ -6,15 +6,14 @@
 #show link: set text(fill: blue)
 #show ref: set text(fill: blue)
 
+// Set heading numbering style.
 #set heading(numbering: "1.1")
-#set math.equation(numbering: "(1)")
 
 // === [ figure example ] ======================================================
 
 #let example-fig = rect(fill: aqua)
 
 = Figures example
-<sec-figures-example>
 
 #figure(
 	example-fig,
@@ -31,16 +30,16 @@
 	caption: [baz],
 ) <fig-baz>
 
-See @fig-foo, @fig-bar and @fig-baz.
+`ref`: See @fig-foo, @fig-bar and @fig-baz.
 
-See #cref[@fig-foo @fig-bar @fig-baz].
+`cref`: See #cref[@fig-foo @fig-bar @fig-baz].
 
-#Cref[@fig-foo @fig-bar @fig-baz] are ...
+`Cref`: #Cref[@fig-foo @fig-bar @fig-baz] are ...
 
 // === [ tables example ] ======================================================
 
+// Position caption of tables on top.
 #show figure.where(kind: table): set figure.caption(position: top)
-#show figure.where(kind: raw): set figure.caption(position: top)
 
 #let example-table = table(
 	columns: 2,
@@ -51,7 +50,6 @@ See #cref[@fig-foo @fig-bar @fig-baz].
 )
 
 = Tables example
-<sec-tables-example>
 
 #figure(
 	caption: [foo],
@@ -68,18 +66,22 @@ See #cref[@fig-foo @fig-bar @fig-baz].
 	example-table,
 ) <tbl-baz>
 
-See @tbl-foo, @tbl-bar and @tbl-baz.
+`ref`: See @tbl-foo, @tbl-bar and @tbl-baz.
 
-See #cref[@tbl-foo @tbl-bar @tbl-baz].
+`cref`: See #cref[@tbl-foo @tbl-bar @tbl-baz].
 
-#Cref[@tbl-foo @tbl-bar @tbl-baz] are ...
+`Cref`: #Cref[@tbl-foo @tbl-bar @tbl-baz] are ...
 
-= Listings example
-<sec-listings-example>
+// === [ listings example ] ====================================================
+
+// Position caption of listings on top.
+#show figure.where(kind: raw): set figure.caption(position: top)
 
 #let example-raw = ```typst
 #set document(title: "meta")
 ```
+
+= Listings example
 
 #figure(
 	caption: [foo],
@@ -96,25 +98,37 @@ See #cref[@tbl-foo @tbl-bar @tbl-baz].
 	example-raw,
 ) <lst-baz>
 
-See @lst-foo, @lst-bar and @lst-baz.
+`ref`: See @lst-foo, @lst-bar and @lst-baz.
 
-See #cref[@lst-foo @lst-bar @lst-baz].
+`cref`: See #cref[@lst-foo @lst-bar @lst-baz].
 
-#Cref[@lst-foo @lst-bar @lst-baz] are ...
+`Cref`: #Cref[@lst-foo @lst-bar @lst-baz] are ...
+
+// === [ sections example ] ====================================================
 
 = Sections example
 <sec-sections-example>
 
-See @sec-figures-example @sec-tables-example @sec-listings-example @sec-sections-example @sec-subsection.
+`ref`: See @sec-sections-example @sec-subsection-one @sec-subsection-two.
 
-See #cref[@sec-figures-example @sec-tables-example @sec-listings-example @sec-sections-example @sec-subsection].
+`cref`: See #cref[@sec-sections-example @sec-subsection-one @sec-subsection-two].
 
-#Cref[@sec-figures-example @sec-tables-example @sec-listings-example @sec-sections-example @sec-subsection] are ...
+`Cref`: #Cref[@sec-sections-example @sec-subsection-one @sec-subsection-two] are ...
 
-== Subsection
-<sec-subsection>
+== Subsection one
+<sec-subsection-one>
 
 #lorem(10)
+
+== Subsection two
+<sec-subsection-two>
+
+#lorem(15)
+
+// === [ equations example ] ===================================================
+
+// Set equation numbering style.
+#set math.equation(numbering: "(1)")
 
 = Equations example
 
@@ -124,8 +138,20 @@ $ e^(i pi) = -1 $ <eq-eulers-identity>
 
 $ (cos x + i sin x)^n = cos(n x) + i sin(n x) $ <eq-de-moivres-formula>
 
-See @eq-pythagoras, @eq-eulers-identity and @eq-de-moivres-formula.
+`ref`: See @eq-pythagoras, @eq-eulers-identity and @eq-de-moivres-formula.
 
-See #cref[@eq-pythagoras @eq-eulers-identity @eq-de-moivres-formula].
+`cref`: See #cref[@eq-pythagoras @eq-eulers-identity @eq-de-moivres-formula].
 
-#Cref[@eq-pythagoras @eq-eulers-identity @eq-de-moivres-formula] are ...
+`Cref`: #Cref[@eq-pythagoras @eq-eulers-identity @eq-de-moivres-formula] are ...
+
+// === [ footnotes example ] ===================================================
+
+= Footnotes example
+
+A few#footnote[foo]<foot-foo> footnotes#footnote[bar]<foot-bar> are present#footnote[baz]<foot-baz> in this sentence.#footnote[qux]<foot-qux>
+
+`ref`: See @foot-foo, @foot-bar, @foot-baz and @foot-qux.
+
+`cref`: See #cref(supplement: "footnotes")[@foot-foo @foot-bar @foot-baz @foot-qux].
+
+`Cref`: #Cref(supplement: "Footnotes")[@foot-foo @foot-bar @foot-baz @foot-qux] are ...

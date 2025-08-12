@@ -29,6 +29,7 @@
 			caption: [foo],
 			label: <subfig1-foo>,
 		),
+		// manual placement of subfigure (figure with "subfigure" kind)
 		[#figure(
 			example-fig,
 			caption: [bar],
@@ -39,9 +40,9 @@
 	caption: lorem(5),
 ) <fig1>
 
-See @fig1, @subfig1-foo and @subfig1-bar.
+`ref`: See @fig1, @subfig1-foo and @subfig1-bar.
 
-See #cref[@fig1 @subfig1-foo @subfig1-bar].
+`cref`: See #cref[@fig1 @subfig1-foo @subfig1-bar].
 
 #figure(
 	grid(
@@ -62,9 +63,9 @@ See #cref[@fig1 @subfig1-foo @subfig1-bar].
 	caption: lorem(5),
 ) <fig2>
 
-See @fig2, @subfig2-foo and @subfig2-bar.
+`ref`: See @fig2, @subfig2-foo and @subfig2-bar.
 
-See #cref(supplement: "figs.")[@fig2 @subfig2-foo @subfig2-bar].
+`cref`: See #cref(supplement: "figs.")[@fig2 @subfig2-foo @subfig2-bar].
 
 = Heading two
 
@@ -87,9 +88,9 @@ See #cref(supplement: "figs.")[@fig2 @subfig2-foo @subfig2-bar].
 	caption: lorem(5),
 ) <fig3>
 
-@fig3, @subfig1-foo and @subfig1-bar are ...
+`ref`: @fig3, @subfig1-foo and @subfig1-bar are ...
 
-#Cref[@fig3 @subfig3-foo @subfig3-bar] are ...
+`Cref`: #Cref[@fig3 @subfig3-foo @subfig3-bar] are ...
 
 #figure(
 	grid(
@@ -110,6 +111,6 @@ See #cref(supplement: "figs.")[@fig2 @subfig2-foo @subfig2-bar].
 	caption: lorem(5),
 ) <fig4>
 
-@fig4, @subfig4-foo and @subfig4-bar are ...
+`ref`: @fig4, @subfig4-foo and @subfig4-bar are ...
 
-#Cref(supplement: "Figs.")[@fig4 @subfig4-foo @subfig4-bar] are ...
+`Cref`: #Cref(supplement: "Figs.")[@fig4 @subfig4-foo @subfig4-bar] are ...

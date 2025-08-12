@@ -42,8 +42,8 @@
 	caption: lorem(5),
 ) <fig-example>
 
-See @fig-example, @subfig-example-foo and @subfig-example-bar.
+`ref`: See @fig-example, @subfig-example-foo and @subfig-example-bar.
 
-See #cref[@fig-example @subfig-example-foo @subfig-example-bar].
+`cref`: See #cref[@fig-example @subfig-example-foo @subfig-example-bar].
 
-#Cref[@fig-example @subfig-example-foo @subfig-example-bar] are ...
+`Cref`: #Cref[@fig-example @subfig-example-foo @subfig-example-bar] are ...

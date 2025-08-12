@@ -1,11 +1,9 @@
-// TODO: add support for all referenceable elements.
-//
 // Referenceable elements (https://typst.app/docs/reference/model/ref/):
 //
 // - [x] headings:  https://typst.app/docs/reference/model/heading/
 // - [x] figures:   https://typst.app/docs/reference/model/figure/
 // - [x] equations: https://typst.app/docs/reference/math/equation/
-// - [ ] footnotes: https://typst.app/docs/reference/model/footnote/
+// - [x] footnotes: https://typst.app/docs/reference/model/footnote/
 
 #import "@local/hallon:0.1.0": normalize-length, title-case, pluralize
 
@@ -17,9 +15,24 @@
 	return elem.has("number-align") and elem.has("block")
 }
 
+#let is-footnote(elem) = {
+	if elem.fields().len() != 3 {
+		return false
+	}
+	return elem.has("numbering") and elem.has("body") and elem.has("label")
+}
+
 #let supplement-func(ref, capital: false) = {
 	let target = query(ref.target).first()
-	let supplement = target.supplement.text
+	let supplement = none
+	if target.has("supplement") {
+		supplement = target.supplement.text
+	} else if is-footnote(target) {
+		return none // no default supplement for footnotes
+	} else {
+		//return [ fields: #target.fields() \ ]
+		panic("unable to get supplement of target '" + str(type(target)) + "'")
+	}
 	let singular = supplement.trim(regex("[.]")) // remove trailing dot if present (e.g. "Fig.")
 	let plural = pluralize(singular)
 	let s = supplement.replace(singular, plural)
@@ -56,9 +69,11 @@
 			c = counter(heading)
 		} else if is-equation(elem) {
 			c = counter(math.equation)
+		} else if is-footnote(elem) {
+			c = counter(footnote)
 		} else {
 			//return [ fields: #elem.fields() \ ]
-			panic("unable to get counter of element '" + type(elem) + "'")
+			panic("unable to get counter of element '" + str(type(elem)) + "'")
 		}
 		let text = std.numbering(elem.numbering, ..c.at(elem.label))
 		link(elem.label, text)
