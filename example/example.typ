@@ -6,11 +6,14 @@
 #show link: set text(fill: blue)
 #show ref: set text(fill: blue)
 
+#set heading(numbering: "1.1")
+
 // === [ figure example ] ======================================================
 
 #let example-fig = rect(fill: aqua)
 
 = Figures example
+<sec-figures-example>
 
 #figure(
 	example-fig,
@@ -47,6 +50,7 @@ See #cref[@fig-foo @fig-bar @fig-baz].
 )
 
 = Tables example
+<sec-tables-example>
 
 #figure(
 	caption: [foo],
@@ -70,6 +74,7 @@ See #cref[@tbl-foo @tbl-bar @tbl-baz].
 #Cref[@tbl-foo @tbl-bar @tbl-baz] are ...
 
 = Listings example
+<sec-listings-example>
 
 #let example-raw = ```typst
 #set document(title: "meta")
@@ -95,3 +100,17 @@ See @lst-foo, @lst-bar and @lst-baz.
 See #cref[@lst-foo @lst-bar @lst-baz].
 
 #Cref[@lst-foo @lst-bar @lst-baz] are ...
+
+= Sections example
+<sec-sections-example>
+
+See @sec-figures-example @sec-tables-example @sec-listings-example @sec-sections-example @sec-subsection.
+
+See #cref[@sec-figures-example @sec-tables-example @sec-listings-example @sec-sections-example @sec-subsection].
+
+#Cref[@sec-figures-example @sec-tables-example @sec-listings-example @sec-sections-example @sec-subsection] are ...
+
+== Subsection
+<sec-subsection>
+
+#lorem(10)

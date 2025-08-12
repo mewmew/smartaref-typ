@@ -2,7 +2,7 @@
 //
 // Referenceable elements (https://typst.app/docs/reference/model/ref/):
 //
-// - [ ] headings:  https://typst.app/docs/reference/model/heading/
+// - [x] headings:  https://typst.app/docs/reference/model/heading/
 // - [x] figures:   https://typst.app/docs/reference/model/figure/
 // - [ ] equations: https://typst.app/docs/reference/math/equation/
 // - [ ] footnotes: https://typst.app/docs/reference/model/footnote/
@@ -41,10 +41,16 @@
 	}
 	show std.ref: it => {
 		let elem = it.element
-		link(
-			elem.label,
-			std.numbering(elem.numbering, ..elem.counter.at(elem.label)),
-		)
+		let c = none
+		if elem.has("counter") {
+			c = elem.counter
+		} else if elem.has("bookmarked") {
+			c = counter(heading) // counter of heading element
+		} else {
+			panic("unable to get counter of element '" + type(elem) + "'")
+		}
+		let text = std.numbering(elem.numbering, ..c.at(elem.label))
+		link(elem.label, text)
 	}
 	refs.join(", ", last: " and ")
 }
