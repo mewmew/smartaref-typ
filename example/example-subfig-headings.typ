@@ -1,10 +1,7 @@
 #set page(width: 12cm, height: auto)
 
 #import "@preview/hallon:0.1.0" as hallon: subfigure
-#import "@preview/smartaref:0.1.0"
-
-#let cref = smartaref.cref.with(levels: 1)
-#let Cref = cref.with(capital: true)
+#import "@preview/smartaref:0.1.0": cref, Cref
 
 // Apply subfigure styles (using one heading level as figure numbering prefix,
 // e.g. "1.1a").
@@ -17,9 +14,9 @@
 #show link: set text(fill: blue)
 #show ref: set text(fill: blue)
 
-#let example-fig = rect(fill: aqua)
-
 // === [ heading dependent figure numbering ] ==================================
+
+#let example-fig = rect(fill: aqua)
 
 = Heading one
 

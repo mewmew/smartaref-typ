@@ -4,9 +4,9 @@ Smart handling of consecutive references (i.e. `cleveref` for Typst).
 
 ## Figures, tables and listings example
 
-See [example/example-fig.typ](example/example-fig.typ).
+See [example/example.typ](example/example.typ).
 
-![Figures, tables and listings example](example/example-fig.png)
+![Figures, tables and listings example](example/example.png)
 
 ## Subfigures example
 

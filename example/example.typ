@@ -6,11 +6,11 @@
 #show link: set text(fill: blue)
 #show ref: set text(fill: blue)
 
-#let example-fig = rect(fill: aqua)
-
 // === [ figure example ] ======================================================
 
-= Figure example
+#let example-fig = rect(fill: aqua)
+
+= Figures example
 
 #figure(
 	example-fig,
