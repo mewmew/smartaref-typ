@@ -29,13 +29,14 @@
 
 See @fig-foo, @fig-bar and @fig-baz.
 
-See #cref(<fig-foo>, <fig-bar>, <fig-baz>).
+See #cref[@fig-foo @fig-bar @fig-baz].
 
-#Cref(<fig-foo>, <fig-bar>, <fig-baz>) are ...
+#Cref[@fig-foo @fig-bar @fig-baz] are ...
 
 // === [ tables example ] ======================================================
 
 #show figure.where(kind: table): set figure.caption(position: top)
+#show figure.where(kind: raw): set figure.caption(position: top)
 
 #let example-table = table(
 	columns: 2,
@@ -64,9 +65,9 @@ See #cref(<fig-foo>, <fig-bar>, <fig-baz>).
 
 See @tbl-foo, @tbl-bar and @tbl-baz.
 
-See #cref(<tbl-foo>, <tbl-bar>, <tbl-baz>).
+See #cref[@tbl-foo @tbl-bar @tbl-baz].
 
-#Cref(<tbl-foo>, <tbl-bar>, <tbl-baz>) are ...
+#Cref[@tbl-foo @tbl-bar @tbl-baz] are ...
 
 = Listings example
 
@@ -91,6 +92,6 @@ See #cref(<tbl-foo>, <tbl-bar>, <tbl-baz>).
 
 See @lst-foo, @lst-bar and @lst-baz.
 
-See #cref(<lst-foo>, <lst-bar>, <lst-baz>).
+See #cref[@lst-foo @lst-bar @lst-baz].
 
-#Cref(<lst-foo>, <lst-bar>, <lst-baz>) are ...
+#Cref[@lst-foo @lst-bar @lst-baz] are ...

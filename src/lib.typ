@@ -22,12 +22,16 @@
 	numbering(style, ..normalize-length(h-nums, levels), f-num)
 }
 
-#let cref(..labels, levels: 0, capital: false, supplement: none) = context {
-	let elems = labels.pos()
+#let cref(..args, levels: 0, capital: false, supplement: none) = context {
+	let elems = args.pos()
 	let refs = ()
 	for elem in elems {
-		let ref = query(elem).first()
-		refs.push(ref)
+		for child in elem.children {
+			if child.has("target") {
+				let ref = query(child.target).first()
+				refs.push(ref)
+			}
+		}
 	}
 
 	// Use optionally heading-dependent numbering of figures and subfigures.

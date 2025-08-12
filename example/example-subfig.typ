@@ -47,6 +47,6 @@
 
 See @fig-example, @subfig-example-foo and @subfig-example-bar.
 
-See #cref(<fig-example>, <subfig-example-foo>, <subfig-example-bar>).
+See #cref[@fig-example @subfig-example-foo @subfig-example-bar].
 
-#Cref(<fig-example>, <subfig-example-foo>, <subfig-example-bar>) are ...
+#Cref[@fig-example @subfig-example-foo @subfig-example-bar] are ...
