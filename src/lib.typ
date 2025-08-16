@@ -5,7 +5,7 @@
 // - [x] equations: https://typst.app/docs/reference/math/equation/
 // - [x] footnotes: https://typst.app/docs/reference/model/footnote/
 
-#import "@local/hallon:0.1.0": normalize-length, title-case, pluralize
+#import "@local/hallon:0.1.0": title-case
 
 #let is-heading(elem) = {
 	return elem.has("bookmarked")
@@ -22,20 +22,40 @@
 	return elem.has("numbering") and elem.has("body") and elem.has("label")
 }
 
-#let supplement-func(ref, capital: false) = {
-	let target = query(ref.target).first()
+#let is-ref(elem) = {
+	return elem.has("target")
+}
+
+// TODO: use __pluralize from `swaits/typst-collection` repo
+// (file path: `glossy/src/utils.typ`)
+#let pluralize(s) = {
+	s + "s"
+}
+
+#let supplement-func(refs, capital: false) = {
+	let target = query(refs.first().target).first()
 	let supplement = none
 	if target.has("supplement") {
-		supplement = target.supplement.text
+		if target.supplement.has("text") {
+			supplement = target.supplement.text
+		} else if type(target.supplement) == content {
+			return target.supplement
+		} else {
+			//return [ fields: #target.supplement.fields() \ ]
+			panic("unable to get supplement (with type '" + str(type(target.supplement)) + "') of target '" + str(type(target)) + "'")
+		}
 	} else if is-footnote(target) {
 		return none // no default supplement for footnotes
 	} else {
 		//return [ fields: #target.fields() \ ]
 		panic("unable to get supplement of target '" + str(type(target)) + "'")
 	}
-	let singular = supplement.trim(regex("[.]")) // remove trailing dot if present (e.g. "Fig.")
-	let plural = pluralize(singular)
-	let s = supplement.replace(singular, plural)
+	let s = supplement
+	if refs.len() > 1 {
+		let singular = s.trim(regex("[.]")) // remove trailing dot if present (e.g. "Fig.")
+		let plural = pluralize(singular)
+		s = s.replace(singular, plural)
+	}
 	if capital {
 		title-case(s)
 	} else {
@@ -46,8 +66,14 @@
 #let cref(..args, supplement: supplement-func) = context {
 	let refs = ()
 	for arg in args.pos() {
-		for child in arg.children {
-			if child.has("target") {
+		let children = ()
+		if arg.has("children") {
+			children = arg.children
+		} else {
+			children.push(arg)
+		}
+		for child in children {
+			if is-ref(child) {
 				refs.push(child)
 			}
 		}
@@ -56,12 +82,19 @@
 		if type(supplement) == str or type(supplement) == content {
 			supplement
 		} else if type(supplement) == function {
-			supplement(refs.first())
+			supplement(refs)
 		}
 		[ ]
 	}
-	show std.ref: it => {
-		let elem = it.element
+	let targets = ()
+	for ref in refs {
+		let target = query(ref.target).first()
+		targets.push(target)
+	}
+	let new_refs = ()
+	let all_nums = ()
+	for target in targets {
+		let elem = target
 		let c = none
 		if elem.has("counter") {
 			c = elem.counter
@@ -75,10 +108,18 @@
 			//return [ fields: #elem.fields() \ ]
 			panic("unable to get counter of element '" + str(type(elem)) + "'")
 		}
-		let text = std.numbering(elem.numbering, ..c.at(elem.label))
-		link(elem.label, text)
+		let nums = c.at(elem.location())
+		let text = std.numbering(elem.numbering, ..nums)
+		let new_ref = link(
+			target.label,
+			text,
+		)
+		new_refs.push(new_ref)
+		all_nums.push(nums)
 	}
-	refs.join(", ", last: " and ")
+	// TODO: implement compacting of crefs.
+	//[ all nums: #all_nums \ ]
+	new_refs.join(", ", last: " and ")
 }
 
 #let Cref = cref.with(supplement: supplement-func.with(capital: true))

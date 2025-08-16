@@ -15,6 +15,12 @@
 
 = Figures example
 
+`ref`: See @fig-foo, @fig-bar and @fig-baz.
+
+`cref`: See #cref[@fig-foo @fig-bar @fig-baz].
+
+`Cref`: #Cref[@fig-foo @fig-bar @fig-baz] are ...
+
 #figure(
 	example-fig,
 	caption: [foo],
@@ -30,12 +36,6 @@
 	caption: [baz],
 ) <fig-baz>
 
-`ref`: See @fig-foo, @fig-bar and @fig-baz.
-
-`cref`: See #cref[@fig-foo @fig-bar @fig-baz].
-
-`Cref`: #Cref[@fig-foo @fig-bar @fig-baz] are ...
-
 // === [ tables example ] ======================================================
 
 // Position caption of tables on top.
@@ -44,12 +44,18 @@
 #let example-table = table(
 	columns: 2,
 	stroke: 0.3pt,
-	table.header([*asdf*], [*qwerty*]),
+	table.header[*asdf*][*qwerty*],
 	[a], [b],
 	[c], [d],
 )
 
 = Tables example
+
+`ref`: See @tbl-foo, @tbl-bar and @tbl-baz.
+
+`cref`: See #cref[@tbl-foo @tbl-bar @tbl-baz].
+
+`Cref`: #Cref[@tbl-foo @tbl-bar @tbl-baz] are ...
 
 #figure(
 	caption: [foo],
@@ -57,20 +63,14 @@
 ) <tbl-foo>
 
 #figure(
-	caption: [foo],
+	caption: [bar],
 	example-table,
 ) <tbl-bar>
 
 #figure(
-	caption: [foo],
+	caption: [baz],
 	example-table,
 ) <tbl-baz>
-
-`ref`: See @tbl-foo, @tbl-bar and @tbl-baz.
-
-`cref`: See #cref[@tbl-foo @tbl-bar @tbl-baz].
-
-`Cref`: #Cref[@tbl-foo @tbl-bar @tbl-baz] are ...
 
 // === [ listings example ] ====================================================
 
@@ -82,6 +82,12 @@
 ```
 
 = Listings example
+
+`ref`: See @lst-foo, @lst-bar and @lst-baz.
+
+`cref`: See #cref[@lst-foo @lst-bar @lst-baz].
+
+`Cref`: #Cref[@lst-foo @lst-bar @lst-baz] are ...
 
 #figure(
 	caption: [foo],
@@ -97,12 +103,6 @@
 	caption: [baz],
 	example-raw,
 ) <lst-baz>
-
-`ref`: See @lst-foo, @lst-bar and @lst-baz.
-
-`cref`: See #cref[@lst-foo @lst-bar @lst-baz].
-
-`Cref`: #Cref[@lst-foo @lst-bar @lst-baz] are ...
 
 // === [ sections example ] ====================================================
 
@@ -132,26 +132,26 @@
 
 = Equations example
 
-$ abs(z) = sqrt(x^2 + y^2) $ <eq-pythagoras>
-
-$ e^(i pi) = -1 $ <eq-eulers-identity>
-
-$ (cos x + i sin x)^n = cos(n x) + i sin(n x) $ <eq-de-moivres-formula>
-
 `ref`: See @eq-pythagoras, @eq-eulers-identity and @eq-de-moivres-formula.
 
 `cref`: See #cref[@eq-pythagoras @eq-eulers-identity @eq-de-moivres-formula].
 
 `Cref`: #Cref[@eq-pythagoras @eq-eulers-identity @eq-de-moivres-formula] are ...
 
+$ abs(z) = sqrt(x^2 + y^2) $ <eq-pythagoras>
+
+$ e^(i pi) = -1 $ <eq-eulers-identity>
+
+$ (cos x + i sin x)^n = cos(n x) + i sin(n x) $ <eq-de-moivres-formula>
+
 // === [ footnotes example ] ===================================================
 
 = Footnotes example
-
-A few#footnote[foo]<foot-foo> footnotes#footnote[bar]<foot-bar> are present#footnote[baz]<foot-baz> in this sentence.#footnote[qux]<foot-qux>
 
 `ref`: See @foot-foo, @foot-bar, @foot-baz and @foot-qux.
 
 `cref`: See #cref(supplement: "footnotes")[@foot-foo @foot-bar @foot-baz @foot-qux].
 
 `Cref`: #Cref(supplement: "Footnotes")[@foot-foo @foot-bar @foot-baz @foot-qux] are ...
+
+A few#footnote[foo]<foot-foo> footnotes#footnote[bar]<foot-bar> are present#footnote[baz]<foot-baz> in this sentence.#footnote[qux]<foot-qux>
