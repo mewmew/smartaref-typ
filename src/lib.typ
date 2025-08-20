@@ -5,8 +5,6 @@
 // - [x] equations: https://typst.app/docs/reference/math/equation/
 // - [x] footnotes: https://typst.app/docs/reference/model/footnote/
 
-#import "@local/hallon:0.1.0": title-case
-
 // is-heading reports whether the given element is a heading.
 #let is-heading(elem) = {
 	return elem.has("bookmarked")
@@ -37,6 +35,13 @@
 // see: https://github.com/swaits/typst-collection/issues/65
 #let pluralize(s) = {
 	s + "s"
+}
+
+// title-case capitalizes the first character of the given string.
+#let title-case(s) = {
+	let c = s.first()
+	upper[#c]
+	s.slice(c.len(),)
 }
 
 // supplement-func returns an (optionally capitalized) supplement for the given
