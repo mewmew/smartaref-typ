@@ -109,7 +109,7 @@
 = Sections example
 <sec-sections-example>
 
-`ref`: See @sec-sections-example @sec-subsection-one @sec-subsection-two.
+`ref`: See @sec-sections-example, @sec-subsection-one and @sec-subsection-two.
 
 `cref`: See #cref[@sec-sections-example @sec-subsection-one @sec-subsection-two].
 

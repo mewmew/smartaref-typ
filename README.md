@@ -20,6 +20,12 @@ See [example/example-subfig-headings.typ](example/example-subfig-headings.typ).
 
 ![Heading-dependent numbering of subfigures](example/example-subfig-headings.png)
 
+## Compact consecutive references
+
+See [example/example-compact.typ](example/example-compact.typ).
+
+![Compact consecutive references example](example/example-compact.png)
+
 ## Subpar example
 
 See [example/example-subpar.typ](example/example-subpar.typ).
