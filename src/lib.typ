@@ -44,43 +44,86 @@
 	s.slice(c.len(),)
 }
 
-// supplement-func returns an (optionally capitalized) supplement for the given
-// list of references.
-#let supplement-func(
-	// An array of references for which to provide a supplement.
-	refs,
-	// Whether to capitalize the supplement.
-	capital: false,
+// simple-supplement returns the (simple) supplement for a given
+// ref
+#let simple-supplement(
+  // A reference for which to provide a supplement.
+  ref,
 ) = {
-	let target = query(refs.first().target).first()
-	let supplement = none
-	if target.has("supplement") {
-		if target.supplement.has("text") {
-			supplement = target.supplement.text
-		} else if type(target.supplement) == content {
-			return target.supplement
-		} else {
-			//return [ fields: #target.supplement.fields() \ ]
-			panic("unable to get supplement (with type '" + str(type(target.supplement)) + "') of target '" + str(type(target)) + "'")
-		}
-	} else if is-footnote(target) {
-		return none // no default supplement for footnotes
-	} else {
-		//return [ fields: #target.fields() \ ]
-		panic("unable to get supplement of target '" + str(type(target)) + "'")
-	}
-	let s = supplement
-	if refs.len() > 1 {
-		let singular = s.trim(regex("[.]")) // remove trailing dot if present (e.g. "Fig.")
-		let plural = pluralize(singular)
-		s = s.replace(singular, plural)
-	}
-	if capital {
-		title-case(s)
-	} else {
-		lower(s)
-	}
+  let target = query(ref.target).first()
+  let supplement = none
+  if target.has("supplement") {
+    if target.supplement.has("text") {
+      supplement = target.supplement.text
+    } else if type(target.supplement) == content {
+      return target.supplement
+    } else {
+      //return [ fields: #target.supplement.fields() \ ]
+      panic(
+        "unable to get supplement (with type '"
+          + str(type(target.supplement))
+          + "') of target '"
+          + str(type(target))
+          + "'",
+      )
+    }
+  } else if is-footnote(target) {
+    return none // no default supplement for footnotes
+  } else {
+    //return [ fields: #target.fields() \ ]
+    panic("unable to get supplement of target '" + str(type(target)) + "'")
+  }
+	return supplement
 }
+
+// supplement-func returns an array of pairs consisting of an 
+// (optionally capitalized) supplement and an associated array
+// of references.
+#let supplement-func(
+  // An array of references for which to provide a supplement.
+  refs,
+  // Determined by a function which returns a supplement to a ref
+  supplement: simple-supplement,
+  // Whether to capitalize the supplement.
+  capital: false,
+) = {
+  let batches = ()
+  let ref = none
+  while refs.len() > 0 {
+    (ref, ..refs) = refs
+    let batch = (ref,)
+    let s = supplement(ref)
+    // Do not combine refs with 'none' supplements  
+    if s == none { break }
+    while refs.len() > 0 {
+      let ref = refs.first()
+      // Stop if next ref has different supplement
+      if supplement(ref) != s { break }
+      // o/w collect ref and remove from list
+      batch.push(ref)
+      (_, ..refs) = refs
+    }
+    batches.push((s, batch))
+  }
+  // (Optionally) Capitalise and pluralize supplements
+  return batches.enumerate().map( ((i, (s, batch))) => {
+    if s == none {
+      return (s, batch)
+    }
+    if batch.len() > 1 {
+      let singular = s.trim(regex("[.]")) // remove trailing dot if present (e.g. "Fig.")
+      let plural = pluralize(singular)
+      s = s.replace(singular, plural)
+    }
+    if capital and i == 0 {
+      s = title-case(s)
+    } else {
+      s = lower(s)
+    }
+    return (s, batch)
+  })
+}
+
 
 // is-consecutive reports whether the given numberings follow one another in
 // consecutive order (e.g. `(3, 1, 2)` is followed by `(3, 1, 3)`).
@@ -153,7 +196,7 @@
 	// An alternative separator between the last two references.
 	last: " and ",
 ) = {
-	args.join(separator, last: last)
+  args.join(separator, last: last)
 }
 
 #let cref(
@@ -171,74 +214,79 @@
 	// - A `string` (e.g. "figures" or "tables").
 	// - A `content` value.
 	// - A `function` taking a list of references and a boolean to optionally
-	//   capitalize the returned supplement.
+	//   capitalize the returned supplement and returning a sequence of 
+	// 	 supplement and list-or-references pairs
 	supplement: supplement-func,
 	// A function used to join references.
 	join-func: join-func,
 ) = context {
-	let refs = ()
-	for arg in args.pos() {
-		let children = ()
-		if arg.has("children") {
-			children = arg.children
-		} else {
-			children.push(arg)
-		}
-		for child in children {
-			if is-ref(child) {
-				refs.push(child)
-			}
-		}
-	}
-	if supplement != none {
-		if type(supplement) == str or type(supplement) == content {
-			supplement
-		} else if type(supplement) == function {
-			supplement(refs)
-		} else {
-			panic("support for supplement '" + str(type(supplement)) + "' not yet supported")
-		}
-		[ ]
-	}
-	let targets = ()
-	for ref in refs {
-		let target = query(ref.target).first()
-		targets.push(target)
-	}
-	let short-refs = () // short references (e.g. "1" instead of "Figure 1")
-	let all-nums = ()   // array of counter numberings.
-	for target in targets {
-		let elem = target
-		let c = none
-		if elem.has("counter") {
-			c = elem.counter
-		} else if is-heading(elem) {
-			c = counter(heading)
-		} else if is-equation(elem) {
-			c = counter(math.equation)
-		} else if is-footnote(elem) {
-			c = counter(footnote)
-		} else {
-			//return [ fields: #elem.fields() \ ]
-			panic("unable to get counter of element '" + str(type(elem)) + "'")
-		}
-		let nums = c.at(elem.location())
-		let text = std.numbering(elem.numbering, ..nums)
-		let short-ref = link(
-			target.label,
-			text,
-		)
-		short-refs.push(short-ref)
-		all-nums.push(nums)
-	}
-	if compact {
-		// compact consecutive references (e.g. "figs. 1, 2, 3 and 4" becomes
-		// "figs. 1 to 4").
-		let compacted-refs = compact-func(short-refs, all-nums)
-		join-func(compacted-refs)
-	} else {
-		join-func(short-refs)
-	}
+  let refs = ()
+  for arg in args.pos() {
+    let children = ()
+    if arg.has("children") {
+      children = arg.children
+    } else {
+      children.push(arg)
+    }
+    for child in children {
+      if is-ref(child) {
+        refs.push(child)
+      }
+    }
+  }
+  let batches = ()
+  if supplement != none {
+    if type(supplement) == str or type(supplement) == content {
+      batches = ((supplement , refs),)
+    } else if type(supplement) == function {
+      batches = supplement(refs)
+    } else {
+      panic("support for supplement '" + str(type(supplement)) + "' not yet supported")
+    }
+  }
+  let output = ()
+  for (s,refs) in batches {
+    let targets = ()
+    for ref in refs {
+      let target = query(ref.target).first()
+      targets.push(target)
+    }
+    let short-refs = () // short references (e.g. "1" instead of "Figure 1")
+    let all-nums = () // array of counter numberings.
+    for target in targets {
+      let elem = target
+      let c = none
+      if elem.has("counter") {
+        c = elem.counter
+      } else if is-heading(elem) {
+        c = counter(heading)
+      } else if is-equation(elem) {
+        c = counter(math.equation)
+      } else if is-footnote(elem) {
+        c = counter(footnote)
+      } else {
+        //return [ fields: #elem.fields() \ ]
+        panic("unable to get counter of element '" + str(type(elem)) + "'")
+      }
+      let nums = c.at(elem.location())
+      let text = std.numbering(elem.numbering, ..nums)
+      let short-ref = link(
+        target.label,
+        text,
+      )
+      short-refs.push(short-ref)
+      all-nums.push(nums)
+    }
+    if compact {
+      // compact consecutive references (e.g. "figs. 1, 2, 3 and 4" becomes
+      // "figs. 1 to 4").
+      let compacted-refs = compact-func(short-refs, all-nums)
+      output.push(s + [~] + join-func(compacted-refs))
+    } else {
+      output.push(s + [~] + join-func(short-refs))
+    }
+  }
+  return join-func(output)
 }
 
 #let Cref = cref.with(

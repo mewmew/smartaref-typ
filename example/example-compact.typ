@@ -1,6 +1,7 @@
 #set page(width: 15cm, height: auto)
 
-#import "@preview/smartaref:0.1.0"
+// #import "@preview/smartaref:0.1.0"
+#import "../src/lib.typ" as smartaref
 
 #let cref = smartaref.cref.with(compact: true)
 #let Cref = smartaref.Cref.with(compact: true)
@@ -190,3 +191,15 @@ $ (cos x + i sin x)^n = cos(n x) + i sin(n x) $ <eq-de-moivres-formula>
 `cref`: See #cref(supplement: "footnotes")[@foot-foo @foot-bar @foot-baz @foot-qux].
 
 A few#footnote[foo]<foot-foo> footnotes#footnote[bar]<foot-bar> are present#footnote[baz]<foot-baz> in this sentence.#footnote[qux]<foot-qux>
+
+// === [ mixed example ] ===================================================
+
+= Mixed example
+
+`ref`: See @fig-foo, @tbl-foo, @tbl-bar, @eq-pythagoras, @eq-eulers-identity and @eq-de-moivres-formula
+
+#emph[`compact: false`] \
+`cref`: See #cref(compact: false)[@fig-foo @fig-bar @fig-baz @tbl-foo @tbl-bar @tbl-baz @eq-pythagoras @eq-eulers-identity @eq-de-moivres-formula].
+
+#emph[`compact: true`] \
+`cref`: See #cref[@fig-foo @fig-bar @fig-baz @tbl-foo @tbl-bar @tbl-baz @eq-pythagoras @eq-eulers-identity  @eq-de-moivres-formula].

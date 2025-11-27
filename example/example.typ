@@ -1,6 +1,7 @@
 #set page(width: 12cm, height: auto)
 
-#import "@preview/smartaref:0.1.0": cref, Cref
+// #import "@preview/smartaref:0.1.0": cref, Cref
+#import "../src/lib.typ": cref, Cref
 
 // Highlight links.
 #show link: set text(fill: blue)
@@ -155,3 +156,13 @@ $ (cos x + i sin x)^n = cos(n x) + i sin(n x) $ <eq-de-moivres-formula>
 `Cref`: #Cref(supplement: "Footnotes")[@foot-foo @foot-bar @foot-baz @foot-qux] are ...
 
 A few#footnote[foo]<foot-foo> footnotes#footnote[bar]<foot-bar> are present#footnote[baz]<foot-baz> in this sentence.#footnote[qux]<foot-qux>
+
+// === [ mixed example ] ===================================================
+
+= Mixed example
+
+`ref`: See @fig-foo, @tbl-foo, @tbl-bar, @eq-pythagoras, @eq-eulers-identity and @eq-de-moivres-formula
+
+`cref`: See #cref[@fig-foo @tbl-foo @tbl-bar @eq-pythagoras @eq-eulers-identity @eq-de-moivres-formula].
+
+`Cref`: #Cref[@fig-foo @tbl-foo @tbl-bar @eq-pythagoras @eq-eulers-identity  @eq-de-moivres-formula] are above
