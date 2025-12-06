@@ -231,7 +231,7 @@
       panic("unable to get counter of element '" + str(type(elem)) + "'")
     }
     let nums = c.at(elem.location()) // counter numberings
-    let text = std.numbering(elem.numbering, ..nums)
+	}
     let short-ref = link(
       // short reference (e.g. "1" instead of "Figure 1")
       target.label,
