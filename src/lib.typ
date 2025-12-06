@@ -162,6 +162,8 @@
 	// Whether to compact consecutive references (e.g. "figs. 1, 2, 3 and 4"
 	// becomes "figs. 1 to 4").
 	compact: false,
+	// Whether to sort references by their numbering before compacting/joining.
+	sort: false,
 	// A function used to compact consecutive references.
 	compact-func: compact-func,
 	// A supplement used for the list of references.
@@ -205,8 +207,8 @@
 		let target = query(ref.target).first()
 		targets.push(target)
 	}
-	let short-refs = () // short references (e.g. "1" instead of "Figure 1")
-	let all-nums = ()   // array of counter numberings.
+
+	let items = () // (nums, short-ref) pairs
 	for target in targets {
 		let elem = target
 		let c = none
@@ -222,15 +224,27 @@
 			//return [ fields: #elem.fields() \ ]
 			panic("unable to get counter of element '" + str(type(elem)) + "'")
 		}
-		let nums = c.at(elem.location())
+		let nums = c.at(elem.location()) // counter numberings
 		let text = std.numbering(elem.numbering, ..nums)
-		let short-ref = link(
+		let short-ref = link( // short reference (e.g. "1" instead of "Figure 1")
 			target.label,
 			text,
 		)
-		short-refs.push(short-ref)
-		all-nums.push(nums)
-	}
+	    items.push((nums, short-ref))
+	  }
+	
+	  // Optionally sort by numbering tuple.
+	if sort {
+	    items = items.sorted(key: it => it.at(0))
+	  }
+	
+	let short-refs = ()
+	let all-nums = ()
+	for item in items {
+	    all-nums.push(item.at(0))
+	    short-refs.push(item.at(1))
+	  }
+
 	if compact {
 		// compact consecutive references (e.g. "figs. 1, 2, 3 and 4" becomes
 		// "figs. 1 to 4").
