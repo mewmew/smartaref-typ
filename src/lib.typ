@@ -243,7 +243,7 @@
   // Optionally sort by numbering tuple.
   if sort {
     items = items.sorted(key: it => it.at(0))
-  }
+	}
 
   let short-refs = ()
   let all-nums = ()
