@@ -223,10 +223,11 @@
 			panic("unable to get counter of element '" + str(type(elem)) + "'")
 		}
 		let nums = c.at(elem.location())
-		let text = std.numbering(elem.numbering, ..nums)
-		let short-ref = link(
+		// Let Typst render the reference text natively so packages like subpar can
+		// supply context-sensitive numbering for subfigures.
+		let short-ref = ref(
 			target.label,
-			text,
+			supplement: none,
 		)
 		short-refs.push(short-ref)
 		all-nums.push(nums)
