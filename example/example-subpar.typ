@@ -15,7 +15,6 @@
 
 `ref`: See @fig-example, @subfig-example-foo and @subfig-example-bar.
 
-// NOTE: incorrect reference. uses "1a" for @subfig-example-bar, should be "1b".
 `cref`: See #cref[@fig-example @subfig-example-foo @subfig-example-bar].
 
 `Cref`: #Cref[@fig-example @subfig-example-foo @subfig-example-bar] are ...
