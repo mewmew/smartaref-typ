@@ -1,7 +1,7 @@
 #set page(width: 12cm, height: auto)
 
 #import "@preview/hallon:0.1.0" as hallon: subfigure
-#import "@preview/smartaref:0.1.0": cref, Cref
+#import "@preview/smartaref:0.1.1": cref, Cref
 
 // Apply subfigure styles (using one heading level as figure numbering prefix,
 // e.g. "1.1a").
