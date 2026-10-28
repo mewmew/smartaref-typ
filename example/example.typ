@@ -1,6 +1,6 @@
 #set page(width: 12cm, height: auto)
 
-#import "@preview/smartaref:0.1.1": cref, Cref
+#import "@preview/smartaref:0.1.2": cref, Cref
 
 // Highlight links.
 #show link: set text(fill: blue)

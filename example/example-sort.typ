@@ -1,6 +1,6 @@
 #set page(width: 15cm, height: auto)
 
-#import "@preview/smartaref:0.1.1"
+#import "@preview/smartaref:0.1.2"
 
 #let cref = smartaref.cref.with(sort: true)
 #let Cref = smartaref.Cref.with(sort: true)

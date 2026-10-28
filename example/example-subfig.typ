@@ -1,7 +1,7 @@
 #set page(width: 12cm, height: auto)
 
 #import "@preview/hallon:0.1.3" as hallon: subfigure
-#import "@preview/smartaref:0.1.1": cref, Cref
+#import "@preview/smartaref:0.1.2": cref, Cref
 
 // Apply subfigure styles.
 #show: hallon.style-figures

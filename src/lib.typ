@@ -234,7 +234,7 @@
 		} else {
 			panic("support for supplement '" + str(type(supplement)) + "' not yet supported")
 		}
-		[ ]
+		[~]
 	}
 	let targets = ()
 	for ref in refs {
